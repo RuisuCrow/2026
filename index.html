@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!--<script src="https://livejs.com/live.js"></script>-->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Practice Website - Home</title>
@@ -762,7 +763,7 @@
             <span>Total:</span>
             <span class="js-total">$0.00</span>
           </div>
-          <button class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Proceed to Checkout</button>
+          <a href="checkout.html" class="btn btn-primary" style="width: 100%; margin-top: 1rem; text-decoration: none;">Proceed to Checkout</a>
         </div>
       </section>
 
@@ -890,6 +891,294 @@
             this.hideCart();
             const targetId = e.target.getAttribute('href').substring(1);
             document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth' });
-    </script>
+          });
+        });
+      }
+
+      handleAddToCart(event) {
+        const button = event.target;
+        const productCard = button.closest('.product-card');
+        const productId = productCard.dataset.productId;
+        const productName = productCard.dataset.productName;
+        const productPrice = parseFloat(productCard.dataset.productPrice);
+
+        const existingItem = this.items.find(item => item.id === productId);
+
+        if (existingItem) {
+          existingItem.quantity += 1;
+        } else {
+          this.items.push({
+            id: productId,
+            name: productName,
+            price: productPrice,
+            quantity: 1
+          });
+        }
+
+        this.saveToMemory();
+        this.updateDisplay();
+        this.showNotification(`${productName} added to cart!`);
+      }
+
+      handleWishlist(event) {
+        event.stopPropagation();
+        const button = event.target;
+        const productId = button.dataset.productId;
+
+        if (this.wishlist.includes(productId)) {
+          this.wishlist = this.wishlist.filter(id => id !== productId);
+          button.classList.remove('active');
+          button.textContent = '♡';
+        } else {
+          this.wishlist.push(productId);
+          button.classList.add('active');
+          button.textContent = '♥';
+        }
+
+        this.saveToMemory();
+      }
+
+      updateQuantity(productId, change) {
+        const item = this.items.find(item => item.id === productId);
+        if (item) {
+          item.quantity += change;
+          if (item.quantity <= 0) {
+            this.removeItem(productId);
+          } else {
+            this.saveToMemory();
+            this.updateDisplay();
+          }
+        }
+      }
+
+      removeItem(productId) {
+        this.items = this.items.filter(item => item.id !== productId);
+        this.saveToMemory();
+        this.updateDisplay();
+      }
+
+      showCart() {
+        document.querySelectorAll('.section').forEach(section => {
+          if (section.id !== 'cart') {
+            section.style.display = 'none';
+          }
+        });
+        document.querySelector('.cart-section').classList.add('active');
+        this.renderCart();
+      }
+
+      hideCart() {
+        document.querySelectorAll('.section').forEach(section => {
+          section.style.display = 'block';
+        });
+        document.querySelector('.cart-section').classList.remove('active');
+      }
+
+      renderCart() {
+        const cartItemsContainer = document.querySelector('.js-cart-items');
+        const cartSummary = document.querySelector('.js-cart-summary');
+
+        if (this.items.length === 0) {
+          cartItemsContainer.innerHTML = '<p class="u-text-center">Your cart is empty</p>';
+          cartSummary.classList.add('u-hidden');
+          return;
+        }
+
+        cartSummary.classList.remove('u-hidden');
+
+        const itemsHTML = this.items.map(item => `
+          <div class="cart-item">
+            <div class="cart-item__image">📦</div>
+            <div class="cart-item__details">
+              <div class="cart-item__title">${item.name}</div>
+              <div class="cart-item__price">${item.price.toFixed(2)}</div>
+            </div>
+            <div class="cart-item__quantity">
+              <button class="quantity-btn js-decrease" data-product-id="${item.id}">-</button>
+              <span>${item.quantity}</span>
+              <button class="quantity-btn js-increase" data-product-id="${item.id}">+</button>
+            </div>
+            <div>
+              <strong>${(item.price * item.quantity).toFixed(2)}</strong>
+            </div>
+            <button class="cart-item__remove js-remove" data-product-id="${item.id}">Remove</button>
+          </div>
+        `).join('');
+
+        cartItemsContainer.innerHTML = itemsHTML;
+
+        // Bind cart item events
+        cartItemsContainer.querySelectorAll('.js-decrease').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            this.updateQuantity(e.target.dataset.productId, -1);
+          });
+        });
+
+        cartItemsContainer.querySelectorAll('.js-increase').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            this.updateQuantity(e.target.dataset.productId, 1);
+          });
+        });
+
+        cartItemsContainer.querySelectorAll('.js-remove').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            this.removeItem(e.target.dataset.productId);
+          });
+        });
+
+        this.updateTotals();
+      }
+
+      updateTotals() {
+        const subtotal = this.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        const shipping = 10.00;
+        const total = subtotal + shipping;
+
+        document.querySelector('.js-subtotal').textContent = `${subtotal.toFixed(2)}`;
+        document.querySelector('.js-total').textContent = `${total.toFixed(2)}`;
+      }
+
+      updateDisplay() {
+        const totalItems = this.items.reduce((sum, item) => sum + item.quantity, 0);
+        document.querySelector('.js-cart-count').textContent = totalItems;
+      }
+
+      showNotification(message) {
+        const notification = document.createElement('div');
+        notification.style.cssText = `
+          position: fixed;
+          top: 80px;
+          right: 20px;
+          background-color: var(--color-secondary);
+          color: white;
+          padding: 1rem 1.5rem;
+          border-radius: var(--border-radius);
+          box-shadow: var(--shadow-lg);
+          z-index: 2000;
+          animation: slideIn 0.3s ease;
+        `;
+        notification.textContent = message;
+        document.body.appendChild(notification);
+
+        setTimeout(() => {
+          notification.style.animation = 'slideOut 0.3s ease';
+          setTimeout(() => notification.remove(), 300);
+        }, 2000);
+      }
+
+      saveToMemory() {
+        // Store in memory for this session
+        window.cartData = {
+          items: this.items,
+          wishlist: this.wishlist
+        };
+      }
+
+      loadFromMemory() {
+        if (window.cartData) {
+          this.items = window.cartData.items || [];
+          this.wishlist = window.cartData.wishlist || [];
+          
+          // Update wishlist buttons
+          this.wishlist.forEach(productId => {
+            const button = document.querySelector(`.js-wishlist-btn[data-product-id="${productId}"]`);
+            if (button) {
+              button.classList.add('active');
+              button.textContent = '♥';
+            }
+          });
+        }
+      }
+    }
+
+    // === Newsletter Form ===
+    class NewsletterForm {
+      constructor() {
+        this.form = document.querySelector('.js-newsletter-form');
+        this.emailInput = document.querySelector('.js-email-input');
+        this.message = document.querySelector('.js-form-message');
+        this.init();
+      }
+
+      init() {
+        this.form.addEventListener('submit', (e) => this.handleSubmit(e));
+      }
+
+      handleSubmit(event) {
+        event.preventDefault();
+
+        const email = this.emailInput.value.trim();
+
+        if (!this.validateEmail(email)) {
+          this.showMessage('Please enter a valid email address', 'error');
+          return;
+        }
+
+        // Simulate successful subscription
+        this.showMessage('Thank you for subscribing! Check your email for confirmation.', 'success');
+        this.emailInput.value = '';
+      }
+
+      validateEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+      }
+
+      showMessage(text, type) {
+        this.message.textContent = text;
+        this.message.className = `form-message ${type}`;
+        
+        setTimeout(() => {
+          this.message.className = 'form-message';
+        }, 5000);
+      }
+    }
+
+    // === Initialize Everything ===
+    document.addEventListener('DOMContentLoaded', () => {
+      const cart = new ShoppingCart();
+      const newsletter = new NewsletterForm();
+
+      // Add smooth scroll for all anchor links
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+          const href = this.getAttribute('href');
+          if (href !== '#' && href.length > 1) {
+            e.preventDefault();
+            const target = document.querySelector(href);
+            if (target) {
+              target.scrollIntoView({ behavior: 'smooth' });
+            }
+          }
+        });
+      });
+    });
+
+    // Add keyframe animations
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes slideIn {
+        from {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+      @keyframes slideOut {
+        from {
+          transform: translateX(0);
+          opacity: 1;
+        }
+        to {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
 </body>
-</html>            
+</html>

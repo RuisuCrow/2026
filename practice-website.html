@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Practice Website - Home</title>
+  <style>
+    /* === CSS Variables === */
+    :root {
+      --color-primary: #2563eb;
+      --color-primary-dark: #1e40af;
+      --color-secondary: #10b981;
+      --color-accent: #f59e0b;
+      --color-danger: #ef4444;
+      --color-text: #1f2937;
+      --color-text-light: #6b7280;
+      --color-bg: #ffffff;
+      --color-bg-light: #f9fafb;
+      --color-border: #e5e7eb;
+      --spacing-xs: 0.25rem;
+      --spacing-sm: 0.5rem;
+      --spacing-md: 1rem;
+      --spacing-lg: 1.5rem;
+      --spacing-xl: 2rem;
+      --spacing-2xl: 3rem;
+      --font-main: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --border-radius: 8px;
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+      --transition: all 0.3s ease;
+    }
+
+    /* === Reset & Base === */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-main);
+      color: var(--color-text);
+      background-color: var(--color-bg);
+      line-height: 1.6;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    button {
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    /* === Layout === */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 var(--spacing-md);
+    }
+
+    /* === Header & Navigation === */
+    .site-header {
+      background-color: var(--color-bg);
+      border-bottom: 1px solid var(--color-border);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .main-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--spacing-md) 0;
+    }
+
+    .site-logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--color-primary);
+      text-decoration: none;
+    }
+
+    .nav-menu {
+      display: flex;
+      gap: var(--spacing-lg);
+      list-style: none;
+    }
+
+    .nav-menu a {
+      color: var(--color-text);
+      text-decoration: none;
+      font-weight: 500;
+      transition: var(--transition);
+    }
+
+    .nav-menu a:hover {
+      color: var(--color-primary);
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: var(--spacing-md);
+      align-items: center;
+    }
+
+    .cart-icon {
+      position: relative;
+      padding: var(--spacing-sm);
+    }
+
+    .cart-count {
+      position: absolute;
+      top: 0;
+      right: 0;
+      background-color: var(--color-danger);
+      color: white;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: bold;
+    }
+
+    /* === Buttons === */
+    .btn {
+      padding: var(--spacing-sm) var(--spacing-lg);
+      border: none;
+      border-radius: var(--border-radius);
+      font-weight: 500;
+      transition: var(--transition);
+      display: inline-block;
+      text-decoration: none;
+      text-align: center;
+    }
+
+    .btn-primary {
+      background-color: var(--color-primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--color-primary-dark);
+    }
+
+    .btn-secondary {
+      background-color: var(--color-secondary);
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background-color: #059669;
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      border: 2px solid var(--color-primary);
+      color: var(--color-primary);
+    }
+
+    .btn-outline:hover {
+      background-color: var(--color-primary);
+      color: white;
+    }
+
+    /* === Main Content === */
+    .main-content {
+      min-height: calc(100vh - 200px);
+      padding: var(--spacing-xl) 0;
+    }
+
+    .section {
+      margin-bottom: var(--spacing-2xl);
+    }
+
+    .section-title {
+      font-size: 2rem;
+      margin-bottom: var(--spacing-lg);
+      color: var(--color-text);
+    }
+
+    /* === Hero Section === */
+    .hero {
+      background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+      color: white;
+      padding: var(--spacing-2xl) 0;
+      text-align: center;
+      border-radius: var(--border-radius);
+      margin-bottom: var(--spacing-2xl);
+    }
+
+    .hero h1 {
+      font-size: 2.5rem;
+      margin-bottom: var(--spacing-md);
+    }
+
+    .hero p {
+      font-size: 1.25rem;
+      margin-bottom: var(--spacing-lg);
+      opacity: 0.9;
+    }
+
+    /* === Blog Section === */
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: var(--spacing-lg);
+    }
+
+    .blog-post {
+      background-color: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      transition: var(--transition);
+    }
+
+    .blog-post:hover {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-4px);
+    }
+
+    .blog-post__image {
+      width: 100%;
+      height: 200px;
+      background-color: var(--color-bg-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-text-light);
+      font-size: 0.875rem;
+    }
+
+    .blog-post__content {
+      padding: var(--spacing-md);
+    }
+
+    .blog-post__title {
+      font-size: 1.25rem;
+      margin-bottom: var(--spacing-sm);
+      color: var(--color-text);
+    }
+
+    .blog-post__excerpt {
+      color: var(--color-text-light);
+      margin-bottom: var(--spacing-md);
+      line-height: 1.5;
+    }
+
+    .blog-post__meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.875rem;
+      color: var(--color-text-light);
+      margin-bottom: var(--spacing-md);
+    }
+
+    /* === Newsletter Section === */
+    .newsletter {
+      background-color: var(--color-bg-light);
+      padding: var(--spacing-xl);
+      border-radius: var(--border-radius);
+      text-align: center;
+    }
+
+    .newsletter h2 {
+      margin-bottom: var(--spacing-md);
+    }
+
+    .newsletter p {
+      color: var(--color-text-light);
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .newsletter-form {
+      max-width: 500px;
+      margin: 0 auto;
+      display: flex;
+      gap: var(--spacing-sm);
+    }
+
+    .form-input {
+      flex: 1;
+      padding: var(--spacing-sm) var(--spacing-md);
+      border: 1px solid var(--color-border);
+      border-radius: var(--border-radius);
+      font-size: 1rem;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--color-primary);
+    }
+
+    .form-message {
+      margin-top: var(--spacing-md);
+      padding: var(--spacing-sm) var(--spacing-md);
+      border-radius: var(--border-radius);
+      display: none;
+    }
+
+    .form-message.success {
+      background-color: #d1fae5;
+      color: #065f46;
+      display: block;
+    }
+
+    .form-message.error {
+      background-color: #fee2e2;
+      color: #991b1b;
+      display: block;
+    }
+
+    /* === Products Section === */
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: var(--spacing-lg);
+    }
+
+    .product-card {
+      background-color: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .product-card:hover {
+      box-shadow: var(--shadow-lg);
+    }
+
+    .product-card__image {
+      width: 100%;
+      height: 250px;
+      background-color: var(--color-bg-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-text-light);
+    }
+
+    .product-card__content {
+      padding: var(--spacing-md);
+    }
+
+    .product-card__title {
+      font-size: 1.125rem;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .product-card__price {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--color-primary);
+      margin-bottom: var(--spacing-md);
+    }
+
+    .product-card__actions {
+      display: flex;
+      gap: var(--spacing-sm);
+    }
+
+    .wishlist-btn {
+      position: absolute;
+      top: var(--spacing-sm);
+      right: var(--spacing-sm);
+      background-color: white;
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-md);
+      transition: var(--transition);
+    }
+
+    .wishlist-btn:hover {
+      transform: scale(1.1);
+    }
+
+    .wishlist-btn.active {
+      color: var(--color-danger);
+    }
+
+    /* === Cart Page === */
+    .cart-section {
+      display: none;
+    }
+
+    .cart-section.active {
+      display: block;
+    }
+
+    .cart-items {
+      background-color: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--border-radius);
+      padding: var(--spacing-lg);
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .cart-item {
+      display: flex;
+      gap: var(--spacing-md);
+      padding: var(--spacing-md);
+      border-bottom: 1px solid var(--color-border);
+      align-items: center;
+    }
+
+    .cart-item:last-child {
+      border-bottom: none;
+    }
+
+    .cart-item__image {
+      width: 80px;
+      height: 80px;
+      background-color: var(--color-bg-light);
+      border-radius: var(--border-radius);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .cart-item__details {
+      flex: 1;
+    }
+
+    .cart-item__title {
+      font-weight: 600;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .cart-item__price {
+      color: var(--color-text-light);
+    }
+
+    .cart-item__quantity {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+    }
+
+    .quantity-btn {
+      width: 30px;
+      height: 30px;
+      border: 1px solid var(--color-border);
+      background-color: var(--color-bg);
+      border-radius: var(--border-radius);
+      font-weight: bold;
+    }
+
+    .cart-item__remove {
+      background-color: transparent;
+      border: none;
+      color: var(--color-danger);
+      font-weight: 500;
+    }
+
+    .cart-summary {
+      background-color: var(--color-bg-light);
+      padding: var(--spacing-lg);
+      border-radius: var(--border-radius);
+    }
+
+    .cart-summary__row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .cart-summary__total {
+      font-size: 1.5rem;
+      font-weight: bold;
+      padding-top: var(--spacing-md);
+      border-top: 2px solid var(--color-border);
+      margin-top: var(--spacing-md);
+    }
+
+    /* === UI Elements Section === */
+    .ui-showcase {
+      display: grid;
+      gap: var(--spacing-xl);
+    }
+
+    .ui-group {
+      padding: var(--spacing-lg);
+      background-color: var(--color-bg-light);
+      border-radius: var(--border-radius);
+    }
+
+    .ui-group h3 {
+      margin-bottom: var(--spacing-md);
+    }
+
+    .button-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-sm);
+    }
+
+    /* === Footer === */
+    .site-footer {
+      background-color: var(--color-text);
+      color: white;
+      padding: var(--spacing-xl) 0;
+      margin-top: var(--spacing-2xl);
+    }
+
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: var(--spacing-xl);
+    }
+
+    .footer-section h3 {
+      margin-bottom: var(--spacing-md);
+    }
+
+    .footer-section ul {
+      list-style: none;
+    }
+
+    .footer-section a {
+      color: rgba(255, 255, 255, 0.8);
+      text-decoration: none;
+      display: block;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .footer-section a:hover {
+      color: white;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: var(--spacing-lg);
+      margin-top: var(--spacing-lg);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    /* === Responsive === */
+    @media (max-width: 768px) {
+      .nav-menu {
+        display: none;
+      }
+
+      .hero h1 {
+        font-size: 1.75rem;
+      }
+
+      .blog-grid,
+      .products-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .newsletter-form {
+        flex-direction: column;
+      }
+
+      .cart-item {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    /* === Utility Classes === */
+    .u-hidden {
+      display: none;
+    }
+
+    .u-text-center {
+      text-align: center;
+    }
+
+    .u-margin-top {
+      margin-top: var(--spacing-lg);
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container">
+      <nav class="main-nav">
+        <a href="#" class="site-logo">Practice Site</a>
+        
+        <ul class="nav-menu">
+          <li><a href="#home" class="js-nav-link">Home</a></li>
+          <li><a href="#blog" class="js-nav-link">Blog</a></li>
+          <li><a href="#shop" class="js-nav-link">Shop</a></li>
+          <li><a href="#ui" class="js-nav-link">UI Elements</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <button class="btn btn-outline js-view-cart">
+            <span class="cart-icon">
+              🛒
+              <span class="cart-count js-cart-count">0</span>
+            </span>
+          </button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="container">
+      <!-- Hero Section -->
+      <section id="home" class="hero">
+        <h1>Welcome to Your Practice Website</h1>
+        <p>A complete environment to test HTML, CSS, and JavaScript</p>
+        <button class="btn btn-secondary">Get Started</button>
+      </section>
+
+      <!-- Blog Section -->
+      <section id="blog" class="section">
+        <h2 class="section-title">Latest Blog Posts</h2>
+        <div class="blog-grid">
+          <article class="blog-post">
+            <div class="blog-post__image">📷 Blog Image 1</div>
+            <div class="blog-post__content">
+              <div class="blog-post__meta">
+                <span>📅 Jan 20, 2026</span>
+                <span>👤 John Doe</span>
+              </div>
+              <h3 class="blog-post__title">Getting Started with Web Development</h3>
+              <p class="blog-post__excerpt">Learn the fundamentals of HTML, CSS, and JavaScript to build amazing websites from scratch.</p>
+              <a href="#" class="btn btn-outline">Read More</a>
+            </div>
+          </article>
+
+          <article class="blog-post">
+            <div class="blog-post__image">🎥 Video Content</div>
+            <div class="blog-post__content">
+              <div class="blog-post__meta">
+                <span>📅 Jan 18, 2026</span>
+                <span>👤 Jane Smith</span>
+              </div>
+              <h3 class="blog-post__title">CSS Grid vs Flexbox Tutorial</h3>
+              <p class="blog-post__excerpt">Understand when to use CSS Grid and when to use Flexbox for your layouts with practical examples.</p>
+              <a href="#" class="btn btn-outline">Watch Video</a>
+            </div>
+          </article>
+
+          <article class="blog-post">
+            <div class="blog-post__image">📷 Blog Image 3</div>
+            <div class="blog-post__content">
+              <div class="blog-post__meta">
+                <span>📅 Jan 15, 2026</span>
+                <span>👤 Mike Johnson</span>
+              </div>
+              <h3 class="blog-post__title">JavaScript ES6+ Features You Should Know</h3>
+              <p class="blog-post__excerpt">Explore modern JavaScript features including arrow functions, destructuring, and async/await.</p>
+              <a href="#" class="btn btn-outline">Read More</a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Newsletter Section -->
+      <section class="section newsletter">
+        <h2>Subscribe to Our Newsletter</h2>
+        <p>Get the latest tutorials and tips delivered to your inbox</p>
+        <form class="newsletter-form js-newsletter-form">
+          <input 
+            type="email" 
+            class="form-input js-email-input" 
+            placeholder="Enter your email" 
+            required
+          >
+          <button type="submit" class="btn btn-primary">Subscribe</button>
+        </form>
+        <div class="form-message js-form-message"></div>
+      </section>
+
+      <!-- Shop Section -->
+      <section id="shop" class="section">
+        <h2 class="section-title">Featured Products</h2>
+        <div class="products-grid js-products-grid">
+          <div class="product-card" data-product-id="1" data-product-name="Wireless Headphones" data-product-price="79.99">
+            <button class="wishlist-btn js-wishlist-btn" data-product-id="1">♡</button>
+            <div class="product-card__image">🎧 Product Image</div>
+            <div class="product-card__content">
+              <h3 class="product-card__title">Wireless Headphones</h3>
+              <div class="product-card__price">$79.99</div>
+              <div class="product-card__actions">
+                <button class="btn btn-primary js-add-to-cart" data-product-id="1">Add to Cart</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="product-card" data-product-id="2" data-product-name="Smart Watch" data-product-price="199.99">
+            <button class="wishlist-btn js-wishlist-btn" data-product-id="2">♡</button>
+            <div class="product-card__image">⌚ Product Image</div>
+            <div class="product-card__content">
+              <h3 class="product-card__title">Smart Watch</h3>
+              <div class="product-card__price">$199.99</div>
+              <div class="product-card__actions">
+                <button class="btn btn-primary js-add-to-cart" data-product-id="2">Add to Cart</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="product-card" data-product-id="3" data-product-name="Laptop Backpack" data-product-price="49.99">
+            <button class="wishlist-btn js-wishlist-btn" data-product-id="3">♡</button>
+            <div class="product-card__image">🎒 Product Image</div>
+            <div class="product-card__content">
+              <h3 class="product-card__title">Laptop Backpack</h3>
+              <div class="product-card__price">$49.99</div>
+              <div class="product-card__actions">
+                <button class="btn btn-primary js-add-to-cart" data-product-id="3">Add to Cart</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="product-card" data-product-id="4" data-product-name="Mechanical Keyboard" data-product-price="129.99">
+            <button class="wishlist-btn js-wishlist-btn" data-product-id="4">♡</button>
+            <div class="product-card__image">⌨️ Product Image</div>
+            <div class="product-card__content">
+              <h3 class="product-card__title">Mechanical Keyboard</h3>
+              <div class="product-card__price">$129.99</div>
+              <div class="product-card__actions">
+                <button class="btn btn-primary js-add-to-cart" data-product-id="4">Add to Cart</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Cart Section (Hidden by default) -->
+      <section id="cart" class="section cart-section">
+        <h2 class="section-title">Shopping Cart</h2>
+        <div class="cart-items js-cart-items">
+          <p class="u-text-center">Your cart is empty</p>
+        </div>
+        <div class="cart-summary js-cart-summary u-hidden">
+          <div class="cart-summary__row">
+            <span>Subtotal:</span>
+            <span class="js-subtotal">$0.00</span>
+          </div>
+          <div class="cart-summary__row">
+            <span>Shipping:</span>
+            <span>$10.00</span>
+          </div>
+          <div class="cart-summary__row cart-summary__total">
+            <span>Total:</span>
+            <span class="js-total">$0.00</span>
+          </div>
+          <button class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Proceed to Checkout</button>
+        </div>
+      </section>
+
+      <!-- UI Elements Section -->
+      <section id="ui" class="section">
+        <h2 class="section-title">UI Elements Showcase</h2>
+        
+        <div class="ui-showcase">
+          <div class="ui-group">
+            <h3>Buttons</h3>
+            <div class="button-group">
+              <button class="btn btn-primary">Primary Button</button>
+              <button class="btn btn-secondary">Secondary Button</button>
+              <button class="btn btn-outline">Outline Button</button>
+              <button class="btn btn-primary" disabled>Disabled Button</button>
+            </div>
+          </div>
+
+          <div class="ui-group">
+            <h3>Form Elements</h3>
+            <form style="max-width: 500px;">
+              <div style="margin-bottom: 1rem;">
+                <label for="text-input" style="display: block; margin-bottom: 0.5rem;">Text Input:</label>
+                <input type="text" id="text-input" class="form-input" style="width: 100%;" placeholder="Enter text">
+              </div>
+              <div style="margin-bottom: 1rem;">
+                <label for="email-input" style="display: block; margin-bottom: 0.5rem;">Email Input:</label>
+                <input type="email" id="email-input" class="form-input" style="width: 100%;" placeholder="Enter email">
+              </div>
+              <div style="margin-bottom: 1rem;">
+                <label for="select-input" style="display: block; margin-bottom: 0.5rem;">Select:</label>
+                <select id="select-input" class="form-input" style="width: 100%;">
+                  <option>Option 1</option>
+                  <option>Option 2</option>
+                  <option>Option 3</option>
+                </select>
+              </div>
+              <div style="margin-bottom: 1rem;">
+                <label for="textarea-input" style="display: block; margin-bottom: 0.5rem;">Textarea:</label>
+                <textarea id="textarea-input" class="form-input" style="width: 100%; min-height: 100px;" placeholder="Enter message"></textarea>
+              </div>
+            </form>
+          </div>
+
+          <div class="ui-group">
+            <h3>Text Styles</h3>
+            <h1>Heading 1</h1>
+            <h2>Heading 2</h2>
+            <h3>Heading 3</h3>
+            <p>This is a regular paragraph with <strong>bold text</strong> and <em>italic text</em>.</p>
+            <p style="color: var(--color-text-light);">This is secondary text with a lighter color.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>About</h3>
+          <p>This is a practice website for testing and learning web development. Experiment with all the features!</p>
+        </div>
+        <div class="footer-section">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#blog">Blog</a></li>
+            <li><a href="#shop">Shop</a></li>
+            <li><a href="#ui">UI Elements</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Contact</h3>
+          <ul>
+            <li>Email: info@practicesite.com</li>
+            <li>Phone: (555) 123-4567</li>
+            <li>Address: 123 Practice St, Web City</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Practice Website. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // === Shopping Cart Manager ===
+    class ShoppingCart {
+      constructor() {
+        this.items = [];
+        this.wishlist = [];
+        this.init();
+      }
+
+      init() {
+        this.loadFromMemory();
+        this.bindEvents();
+        this.updateDisplay();
+      }
+
+      bindEvents() {
+        // Add to cart buttons
+        document.querySelectorAll('.js-add-to-cart').forEach(button => {
+          button.addEventListener('click', (e) => this.handleAddToCart(e));
+        });
+
+        // Wishlist buttons
+        document.querySelectorAll('.js-wishlist-btn').forEach(button => {
+          button.addEventListener('click', (e) => this.handleWishlist(e));
+        });
+
+        // View cart button
+        document.querySelector('.js-view-cart').addEventListener('click', () => {
+          this.showCart();
+        });
+
+        // Navigation links
+        document.querySelectorAll('.js-nav-link').forEach(link => {
+          link.addEventListener('click', (e) => {
+            e.preventDefault();
+            this.hideCart();
+            const targetId = e.target.getAttribute('href').substring(1);
+            document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth' });
